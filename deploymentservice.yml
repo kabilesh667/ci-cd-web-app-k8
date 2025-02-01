@@ -1,0 +1,40 @@
+
+   
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app-deployment
+  labels:
+    app: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp 
+    spec:
+      containers:
+      - name: webserver
+        image: kabilesh667/ci-cd-web-app-k8:latest
+        ports:
+        - containerPort: 8082
+        
+        
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-service
+spec:
+  selector:
+    app: webapp 
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8082
+    nodePort: 31100
